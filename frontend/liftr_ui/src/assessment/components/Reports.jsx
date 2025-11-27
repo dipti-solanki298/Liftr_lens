@@ -65,6 +65,18 @@ const Reports = () => {
     setReports((prev) => prev.filter((rep) => rep.id !== reportId));
   };
 
+  // Show loading state while fetching metadata
+  if (isLoadingMetadata) {
+    return (
+      <div className="w-full h-full bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading report details...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Show report details view
   if (selectedReport) {
     return (
