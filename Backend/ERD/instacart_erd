@@ -1,0 +1,13 @@
+digraph Instacart_ERD {
+	rankdir=LR
+	node [shape=plaintext]
+	departments [label=<<TABLE BORDER='1' CELLBORDER='1' CELLSPACING='0'><TR><TD BGCOLOR='lightgray'><B>departments</B></TD></TR><TR><TD><u>department_id</u> (PK)</TD></TR><TR><TD>department</TD></TR></TABLE>>]
+	aisles [label=<<TABLE BORDER='1' CELLBORDER='1' CELLSPACING='0'><TR><TD BGCOLOR='lightgray'><B>aisles</B></TD></TR><TR><TD><u>aisle_id</u> (PK)</TD></TR><TR><TD>aisle</TD></TR></TABLE>>]
+	products [label=<<TABLE BORDER='1' CELLBORDER='1' CELLSPACING='0'><TR><TD BGCOLOR='lightgray'><B>products</B></TD></TR><TR><TD><u>product_id</u> (PK)</TD></TR><TR><TD>product_name</TD></TR><TR><TD>aisle_id (FK)</TD></TR><TR><TD>department_id (FK)</TD></TR></TABLE>>]
+	orders [label=<<TABLE BORDER='1' CELLBORDER='1' CELLSPACING='0'><TR><TD BGCOLOR='lightgray'><B>orders</B></TD></TR><TR><TD><u>order_id</u> (PK)</TD></TR><TR><TD>user_id</TD></TR><TR><TD>order_number</TD></TR><TR><TD>order_dow</TD></TR><TR><TD>order_hour_of_day</TD></TR><TR><TD>days_since_prior_order</TD></TR></TABLE>>]
+	order_products [label=<<TABLE BORDER='1' CELLBORDER='1' CELLSPACING='0'><TR><TD BGCOLOR='lightgray'><B>order_products</B></TD></TR><TR><TD>order_id (FK)</TD></TR><TR><TD>product_id (FK)</TD></TR><TR><TD>add_to_cart_order</TD></TR><TR><TD>reordered</TD></TR></TABLE>>]
+	aisles -> products [label=aisle_id]
+	departments -> products [label=department_id]
+	products -> order_products [label=product_id]
+	orders -> order_products [label=order_id]
+}

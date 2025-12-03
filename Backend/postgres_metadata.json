@@ -1,0 +1,1616 @@
+{
+    "postgres": {
+        "schemas": {
+            "public": {
+                "tables": {},
+                "functions": [],
+                "procedures": [],
+                "views": []
+            }
+        }
+    },
+    "instacart": {
+        "schemas": {
+            "public": {
+                "tables": {},
+                "functions": [],
+                "procedures": [],
+                "views": []
+            },
+            "sales_schema": {
+                "tables": {
+                    "customers": {
+                        "columns": [
+                            {
+                                "column_name": "customer_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.customers_customer_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "first_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "last_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "email",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "phone",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "created_at",
+                                "data_type": "timestamp without time zone",
+                                "nullable": "YES",
+                                "default": "now()"
+                            }
+                        ],
+                        "primary_keys": [
+                            "customer_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "customers_pkey",
+                                "definition": "CREATE UNIQUE INDEX customers_pkey ON sales_schema.customers USING btree (customer_id)"
+                            },
+                            {
+                                "index_name": "customers_email_key",
+                                "definition": "CREATE UNIQUE INDEX customers_email_key ON sales_schema.customers USING btree (email)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "customer_addresses": {
+                        "columns": [
+                            {
+                                "column_name": "address_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.customer_addresses_address_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "customer_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "street",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "city",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "state",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "postal_code",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "country",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "address_id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "customer_addresses_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "customer_addresses_pkey",
+                                "definition": "CREATE UNIQUE INDEX customer_addresses_pkey ON sales_schema.customer_addresses USING btree (address_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "categories": {
+                        "columns": [
+                            {
+                                "column_name": "category_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.categories_category_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "category_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "category_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "categories_pkey",
+                                "definition": "CREATE UNIQUE INDEX categories_pkey ON sales_schema.categories USING btree (category_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "orders": {
+                        "columns": [
+                            {
+                                "column_name": "order_id",
+                                "data_type": "bigint",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.orders_order_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "customer_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "order_date",
+                                "data_type": "date",
+                                "nullable": "NO",
+                                "default": null
+                            },
+                            {
+                                "column_name": "status",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "total",
+                                "data_type": "numeric",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "order_id",
+                            "order_date"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "orders_pkey",
+                                "definition": "CREATE UNIQUE INDEX orders_pkey ON ONLY sales_schema.orders USING btree (order_id, order_date)"
+                            },
+                            {
+                                "index_name": "idx_orders_customer",
+                                "definition": "CREATE INDEX idx_orders_customer ON ONLY sales_schema.orders USING btree (customer_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": [
+                            "sales_schema.orders_2025_jan",
+                            "sales_schema.orders_2025_feb"
+                        ]
+                    },
+                    "orders_2025_jan": {
+                        "columns": [
+                            {
+                                "column_name": "order_id",
+                                "data_type": "bigint",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.orders_order_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "customer_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "order_date",
+                                "data_type": "date",
+                                "nullable": "NO",
+                                "default": null
+                            },
+                            {
+                                "column_name": "status",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "total",
+                                "data_type": "numeric",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "order_id",
+                            "order_date"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "orders_2025_jan_pkey",
+                                "definition": "CREATE UNIQUE INDEX orders_2025_jan_pkey ON sales_schema.orders_2025_jan USING btree (order_id, order_date)"
+                            },
+                            {
+                                "index_name": "orders_2025_jan_customer_id_idx",
+                                "definition": "CREATE INDEX orders_2025_jan_customer_id_idx ON sales_schema.orders_2025_jan USING btree (customer_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "orders_2025_feb": {
+                        "columns": [
+                            {
+                                "column_name": "order_id",
+                                "data_type": "bigint",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.orders_order_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "customer_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "order_date",
+                                "data_type": "date",
+                                "nullable": "NO",
+                                "default": null
+                            },
+                            {
+                                "column_name": "status",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "total",
+                                "data_type": "numeric",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "order_id",
+                            "order_date"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "orders_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "orders_2025_feb_pkey",
+                                "definition": "CREATE UNIQUE INDEX orders_2025_feb_pkey ON sales_schema.orders_2025_feb USING btree (order_id, order_date)"
+                            },
+                            {
+                                "index_name": "orders_2025_feb_customer_id_idx",
+                                "definition": "CREATE INDEX orders_2025_feb_customer_id_idx ON sales_schema.orders_2025_feb USING btree (customer_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "products": {
+                        "columns": [
+                            {
+                                "column_name": "product_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.products_product_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "product_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "category_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "price",
+                                "data_type": "numeric",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "created_at",
+                                "data_type": "timestamp without time zone",
+                                "nullable": "YES",
+                                "default": "now()"
+                            }
+                        ],
+                        "primary_keys": [
+                            "product_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "products_pkey",
+                                "definition": "CREATE UNIQUE INDEX products_pkey ON sales_schema.products USING btree (product_id)"
+                            },
+                            {
+                                "index_name": "idx_products_category",
+                                "definition": "CREATE INDEX idx_products_category ON sales_schema.products USING btree (category_id)"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "trigger_name": "update_log",
+                                "event": "INSERT",
+                                "action": "EXECUTE FUNCTION sales_schema.log_changes()"
+                            },
+                            {
+                                "trigger_name": "update_log",
+                                "event": "DELETE",
+                                "action": "EXECUTE FUNCTION sales_schema.log_changes()"
+                            },
+                            {
+                                "trigger_name": "update_log",
+                                "event": "UPDATE",
+                                "action": "EXECUTE FUNCTION sales_schema.log_changes()"
+                            }
+                        ],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "order_items": {
+                        "columns": [
+                            {
+                                "column_name": "order_item_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.order_items_order_item_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "order_id",
+                                "data_type": "bigint",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "order_date",
+                                "data_type": "date",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "product_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "quantity",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "price",
+                                "data_type": "numeric",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "order_item_id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "order_items_product_id_fkey",
+                                "column": "product_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "products",
+                                "foreign_column": "product_id"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey1",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey1",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey1",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey1",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey2",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey2",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey2",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_items_order_id_order_date_fkey2",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "order_items_pkey",
+                                "definition": "CREATE UNIQUE INDEX order_items_pkey ON sales_schema.order_items USING btree (order_item_id)"
+                            },
+                            {
+                                "index_name": "idx_order_items_product",
+                                "definition": "CREATE INDEX idx_order_items_product ON sales_schema.order_items USING btree (product_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "payments": {
+                        "columns": [
+                            {
+                                "column_name": "payment_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.payments_payment_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "order_id",
+                                "data_type": "bigint",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "order_date",
+                                "data_type": "date",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "amount",
+                                "data_type": "numeric",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "payment_method",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "paid_at",
+                                "data_type": "timestamp without time zone",
+                                "nullable": "YES",
+                                "default": "now()"
+                            }
+                        ],
+                        "primary_keys": [
+                            "payment_id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey1",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey1",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey1",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey1",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey2",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey2",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey2",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "payments_order_id_order_date_fkey2",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "payments_pkey",
+                                "definition": "CREATE UNIQUE INDEX payments_pkey ON sales_schema.payments USING btree (payment_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "inventory": {
+                        "columns": [
+                            {
+                                "column_name": "inventory_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.inventory_inventory_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "product_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "quantity",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "last_updated",
+                                "data_type": "timestamp without time zone",
+                                "nullable": "YES",
+                                "default": "now()"
+                            }
+                        ],
+                        "primary_keys": [
+                            "inventory_id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "inventory_product_id_fkey",
+                                "column": "product_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "products",
+                                "foreign_column": "product_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "inventory_pkey",
+                                "definition": "CREATE UNIQUE INDEX inventory_pkey ON sales_schema.inventory USING btree (inventory_id)"
+                            },
+                            {
+                                "index_name": "idx_inventory_product",
+                                "definition": "CREATE INDEX idx_inventory_product ON sales_schema.inventory USING btree (product_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "suppliers": {
+                        "columns": [
+                            {
+                                "column_name": "supplier_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.suppliers_supplier_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "supplier_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "contact_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "phone",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "supplier_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "suppliers_pkey",
+                                "definition": "CREATE UNIQUE INDEX suppliers_pkey ON sales_schema.suppliers USING btree (supplier_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "supplier_products": {
+                        "columns": [
+                            {
+                                "column_name": "supplier_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": null
+                            },
+                            {
+                                "column_name": "product_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "supplier_id",
+                            "product_id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "supplier_products_supplier_id_fkey",
+                                "column": "supplier_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "suppliers",
+                                "foreign_column": "supplier_id"
+                            },
+                            {
+                                "constraint_name": "supplier_products_product_id_fkey",
+                                "column": "product_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "products",
+                                "foreign_column": "product_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "supplier_products_pkey",
+                                "definition": "CREATE UNIQUE INDEX supplier_products_pkey ON sales_schema.supplier_products USING btree (supplier_id, product_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "drivers": {
+                        "columns": [
+                            {
+                                "column_name": "driver_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.drivers_driver_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "driver_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "phone",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "driver_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "drivers_pkey",
+                                "definition": "CREATE UNIQUE INDEX drivers_pkey ON sales_schema.drivers USING btree (driver_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "deliveries": {
+                        "columns": [
+                            {
+                                "column_name": "delivery_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.deliveries_delivery_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "order_id",
+                                "data_type": "bigint",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "order_date",
+                                "data_type": "date",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "driver_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "delivered_at",
+                                "data_type": "timestamp without time zone",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "delivery_id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "deliveries_driver_id_fkey",
+                                "column": "driver_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "drivers",
+                                "foreign_column": "driver_id"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey1",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey1",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey1",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey1",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey2",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey2",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey2",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "deliveries_order_id_order_date_fkey2",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "deliveries_pkey",
+                                "definition": "CREATE UNIQUE INDEX deliveries_pkey ON sales_schema.deliveries USING btree (delivery_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "warehouses": {
+                        "columns": [
+                            {
+                                "column_name": "warehouse_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.warehouses_warehouse_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "warehouse_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "location",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "warehouse_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "warehouses_pkey",
+                                "definition": "CREATE UNIQUE INDEX warehouses_pkey ON sales_schema.warehouses USING btree (warehouse_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "warehouse_stock": {
+                        "columns": [
+                            {
+                                "column_name": "id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.warehouse_stock_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "warehouse_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "product_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "quantity",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "warehouse_stock_warehouse_id_fkey",
+                                "column": "warehouse_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "warehouses",
+                                "foreign_column": "warehouse_id"
+                            },
+                            {
+                                "constraint_name": "warehouse_stock_product_id_fkey",
+                                "column": "product_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "products",
+                                "foreign_column": "product_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "warehouse_stock_pkey",
+                                "definition": "CREATE UNIQUE INDEX warehouse_stock_pkey ON sales_schema.warehouse_stock USING btree (id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "discounts": {
+                        "columns": [
+                            {
+                                "column_name": "discount_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.discounts_discount_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "description",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "discount_percent",
+                                "data_type": "numeric",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "discount_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "discounts_pkey",
+                                "definition": "CREATE UNIQUE INDEX discounts_pkey ON sales_schema.discounts USING btree (discount_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "order_discounts": {
+                        "columns": [
+                            {
+                                "column_name": "id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.order_discounts_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "order_id",
+                                "data_type": "bigint",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "order_date",
+                                "data_type": "date",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "discount_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "order_discounts_discount_id_fkey",
+                                "column": "discount_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "discounts",
+                                "foreign_column": "discount_id"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey1",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey1",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey1",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey1",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_jan",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey2",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey2",
+                                "column": "order_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_id"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey2",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_date"
+                            },
+                            {
+                                "constraint_name": "order_discounts_order_id_order_date_fkey2",
+                                "column": "order_date",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "orders_2025_feb",
+                                "foreign_column": "order_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "order_discounts_pkey",
+                                "definition": "CREATE UNIQUE INDEX order_discounts_pkey ON sales_schema.order_discounts USING btree (id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "employees": {
+                        "columns": [
+                            {
+                                "column_name": "employee_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.employees_employee_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "employee_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "role",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            }
+                        ],
+                        "primary_keys": [
+                            "employee_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "employees_pkey",
+                                "definition": "CREATE UNIQUE INDEX employees_pkey ON sales_schema.employees USING btree (employee_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "audit_log": {
+                        "columns": [
+                            {
+                                "column_name": "audit_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.audit_log_audit_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "table_name",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "operation",
+                                "data_type": "character varying",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "changed_at",
+                                "data_type": "timestamp without time zone",
+                                "nullable": "YES",
+                                "default": "now()"
+                            }
+                        ],
+                        "primary_keys": [
+                            "audit_id"
+                        ],
+                        "foreign_keys": [],
+                        "indexes": [
+                            {
+                                "index_name": "audit_log_pkey",
+                                "definition": "CREATE UNIQUE INDEX audit_log_pkey ON sales_schema.audit_log USING btree (audit_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    },
+                    "reviews": {
+                        "columns": [
+                            {
+                                "column_name": "review_id",
+                                "data_type": "integer",
+                                "nullable": "NO",
+                                "default": "nextval('sales_schema.reviews_review_id_seq'::regclass)"
+                            },
+                            {
+                                "column_name": "customer_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "product_id",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "rating",
+                                "data_type": "integer",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "review_text",
+                                "data_type": "text",
+                                "nullable": "YES",
+                                "default": null
+                            },
+                            {
+                                "column_name": "created_at",
+                                "data_type": "timestamp without time zone",
+                                "nullable": "YES",
+                                "default": "now()"
+                            }
+                        ],
+                        "primary_keys": [
+                            "review_id"
+                        ],
+                        "foreign_keys": [
+                            {
+                                "constraint_name": "reviews_customer_id_fkey",
+                                "column": "customer_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "customers",
+                                "foreign_column": "customer_id"
+                            },
+                            {
+                                "constraint_name": "reviews_product_id_fkey",
+                                "column": "product_id",
+                                "foreign_schema": "sales_schema",
+                                "foreign_table": "products",
+                                "foreign_column": "product_id"
+                            }
+                        ],
+                        "indexes": [
+                            {
+                                "index_name": "reviews_pkey",
+                                "definition": "CREATE UNIQUE INDEX reviews_pkey ON sales_schema.reviews USING btree (review_id)"
+                            }
+                        ],
+                        "triggers": [],
+                        "check_constraints": [],
+                        "partitions": []
+                    }
+                },
+                "functions": [
+                    {
+                        "name": "log_changes",
+                        "type": "FUNCTION",
+                        "return_type": "trigger"
+                    },
+                    {
+                        "name": "add_inventory",
+                        "type": "PROCEDURE",
+                        "return_type": null
+                    }
+                ],
+                "procedures": [
+                    "add_inventory"
+                ],
+                "views": []
+            }
+        }
+    }
+}
